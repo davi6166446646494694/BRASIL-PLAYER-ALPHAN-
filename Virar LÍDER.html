@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRASIL PLAYER ALPHAN</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: url('SUA-IMAGEM-AQUI.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.7);
+    min-height: 100vh;
+}
+
+.header {
+    text-align: center;
+    padding: 25px;
+    font-size: 28px;
+    color: #00ffc8;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00ffc8;
+}
+
+.container {
+    max-width: 430px;
+    margin: auto;
+    background: rgba(10,10,30,0.9);
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.9);
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: none;
+    background: #1c1c3a;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.copy {
+    background: linear-gradient(45deg, gold, orange);
+    color: black;
+}
+
+.whatsapp {
+    background: linear-gradient(45deg, #00c853, #00ff88);
+}
+
+/* ALERTA */
+.alerta {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00c853;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+<div class="header">👑 BRASIL PLAYER ALPHAN</div>
+
+<div class="container">
+    <h2>📩 FORMULÁRIO OFICIAL</h2>
+
+    <input type="text" id="nome" placeholder="Nome do jogo">
+    <input type="number" id="idade" placeholder="Idade">
+
+    <input type="text" id="tempo" placeholder="Tempo que joga RPG">
+    <input type="text" id="org" placeholder="Organização desejada">
+    <input type="text" id="exp" placeholder="Experiência total">
+
+    <select id="orgAntiga">
+        <option>Já teve organização? Sim</option>
+        <option>Já teve organização? Não</option>
+    </select>
+
+    <textarea id="motivo" placeholder="Por que você deve ser escolhido"></textarea>
+
+    <input type="text" id="qualidade" placeholder="Sua melhor qualidade">
+    <input type="text" id="defeito" placeholder="Seu defeito">
+
+    <select id="ativo">
+        <option>Ativo: Sim</option>
+        <option>Ativo: Não</option>
+    </select>
+
+    <select id="discordUso">
+        <option>Usa Discord: Sim</option>
+        <option>Usa Discord: Não</option>
+    </select>
+
+    <input type="text" id="discord" placeholder="Nome do Discord">
+    <input type="text" id="horario" placeholder="Horário que joga">
+
+    <select id="mic">
+        <option>Tem Microfone: Sim</option>
+        <option>Tem Microfone: Não</option>
+    </select>
+
+    <button class="copy" onclick="copiar()">📋 COPIAR FORMULÁRIO</button>
+    <button class="whatsapp" onclick="entrar()" id="btnZap">🚀 ENTRAR NO GRUPO</button>
+</div>
+
+<div class="alerta" id="alertaMsg"></div>
+
+</div>
+
+<script>
+
+// SISTEMA DE VERIFICAÇÃO
+let copiado = false;
+
+// COPIAR
+function copiar() {
+    let texto =
+`📩 FORMULÁRIO - BRASIL PLAYER ALPHAN
+
+👤 Nome/ ${nome.value}
+🎂 Idade/ ${idade.value}
+⏱ Tempo RPG/ ${tempo.value}
+🏢 Organização/ ${org.value}
+📅 Experiência/ ${exp.value}
+📜 Organização antiga/ ${orgAntiga.value}
+
+💬 Motivo/ ${motivo.value}
+⭐ Qualidade/ ${qualidade.value}
+⚠ Defeito/ ${defeito.value}
+
+🔥 Ativo/ ${ativo.value}
+💻 Usa Discord/ ${discordUso.value}
+📱 Discord/ ${discord.value}
+
+🕒 Horário/ ${horario.value}
+🎤 Microfone/ ${mic.value}`;
+
+    navigator.clipboard.writeText(texto).then(() => {
+        copiado = true;
+        mostrarAlerta("✔ Formulário copiado! Agora entre no grupo do WhatsApp.");
+    }).catch(() => {
+        let area = document.createElement("textarea");
+        area.value = texto;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        document.body.removeChild(area);
+
+        copiado = true;
+        mostrarAlerta("✔ Copiado! Agora pode entrar no grupo.");
+    });
+}
+
+// ENTRAR
+function entrar() {
+    if(!copiado){
+        mostrarAlerta("❌ Copia o seu formulário primeiro para entrar no zap!");
+        return;
+    }
+
+    window.open("https://chat.whatsapp.com/LJWAlh0f4sr3onyxbbh7uS?mode=gi_t");
+}
+
+// ALERTA
+function mostrarAlerta(msg) {
+    let alerta = document.getElementById("alertaMsg");
+    alerta.innerText = msg;
+    alerta.style.display = "block";
+
+    setTimeout(() => {
+        alerta.style.display = "none";
+    }, 4000);
+}
+
+</script>
+
+</body>
+</html>
