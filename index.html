@@ -1,203 +1,295 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BRASIL PLAYER ALPHAN</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: url('SUA-IMAGEM-AQUI.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: white;
-}
+<!DOCTYPE html>  <html lang="pt-BR">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>BRASIL PLAY ALPHAN</title>  <style>  
+    body {  
+        margin: 0;  
+        font-family: 'Courier New', Arial, sans-serif;  
+        background: url('SUA-IMAGEM-AQUI.jpg') no-repeat center center fixed;  
+        background-size: cover;  
+        color: white;  
+        overflow-y: auto;  
+    }  
+  
+    .overlay {  
+        background: rgba(0,0,0,0.78);  
+        min-height: 100vh;  
+    }  
+  
+    /* LOADING */  
+    #loading-screen {  
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;  
+        background: rgba(10,10,30,0.98);  
+        display: flex; flex-direction: column; align-items: center; justify-content: center;  
+        z-index: 100; transition: opacity 1.5s;  
+    }  
+    .logo {  
+        text-align: center; line-height: 1.05; margin-bottom: 40px;  
+    }  
+    .logo span {  
+        display: block; font-weight: bold; letter-spacing: 6px;  
+    }  
+    .logo .play   { font-size: 78px; color: #ffffff; text-shadow: 0 0 20px #00ffc8; }  
+    .logo .rpg    { font-size: 68px; color: #ff4444;  text-shadow: 0 0 20px #ff4444; }  
+    .logo .alphan { font-size: 88px; color: #00ffc8;  text-shadow: 0 0 25px #00ffc8; }  
+  
+    .progress-bar { width: 480px; height: 14px; background: #1c1c3a; border-radius: 10px; overflow: hidden; }  
+    .progress { height: 100%; width: 0%; background: linear-gradient(to right, #00ffc8, #00ff88); transition: width 0.3s; }  
+  
+    /* LOGIN */  
+    #login-screen {  
+        display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;  
+    }  
+    .login-box {  
+        background: rgba(10,10,30,0.95);  
+        padding: 50px 60px;  
+        border-radius: 20px;  
+        border: 2px solid #00ffc8;  
+        box-shadow: 0 0 40px rgba(0, 255, 200, 0.6);  
+        width: 420px; text-align: center;  
+    }  
+  
+    /* FORMULÁRIO */  
+    .container {  
+        max-width: 520px;  
+        margin: 30px auto;  
+        background: rgba(10,10,30,0.92);  
+        padding: 30px;  
+        border-radius: 18px;  
+        box-shadow: 0 0 30px rgba(0,0,0,0.9);  
+    }  
+  
+    input, select, textarea {  
+        width: 100%;  
+        padding: 13px;  
+        margin-bottom: 18px;  
+        border-radius: 10px;  
+        border: none;  
+        background: #1c1c3a;  
+        color: white;  
+        font-size: 16px;  
+    }  
+  
+    textarea { height: 100px; resize: vertical; }  
+  
+    button {  
+        width: 100%;  
+        padding: 16px;  
+        border: none;  
+        border-radius: 12px;  
+        font-weight: bold;  
+        margin: 20px 0 10px;  
+        cursor: pointer;  
+        font-size: 17px;  
+    }  
+    .copy { background: linear-gradient(45deg, gold, orange); color: black; }  
+    .whatsapp { background: linear-gradient(45deg, #00c853, #00ff88); color: black; }  
+  
+    .alerta {  
+        position: fixed;  
+        bottom: 20px;  
+        left: 50%;  
+        transform: translateX(-50%);  
+        background: #00c853;  
+        padding: 15px 25px;  
+        border-radius: 10px;  
+        display: none;  
+        z-index: 200;  
+        font-weight: bold;  
+    }  
+  
+    h2 { color: #00ffc8; text-align: center; margin-bottom: 25px; }  
+    h3 { color: #ffdd88; margin: 25px 0 12px; }  
+</style>  </head>  
+<body>  <!-- LOADING -->  <div id="loading-screen">  
+    <div class="logo">  
+        <span class="play">PLAY</span>  
+        <span class="rpg">RPG</span>  
+        <span class="alphan">ALPHAN</span>  
+    </div>  
+    <div class="progress-bar">  
+        <div class="progress" id="progress"></div>  
+    </div>  
+    <div style="margin-top:12px; color:#88ffdd;" id="status">CARREGANDO SISTEMA...</div>  
+</div>  <!-- LOGIN -->  <div id="login-screen">  
+    <div class="login-box">  
+        <h2>🔐 ACESSO RESTRITO</h2>  
+        <div style="color:#88ffdd; margin-bottom:30px;">BRASIL PLAY ALPHAN • SELEÇÃO DE ADM</div>  <input type="text" id="username" placeholder="Nome de Usuário">  
+    <input type="password" id="password" placeholder="Senha de Acesso">  
 
-.overlay {
-    background: rgba(0,0,0,0.7);
-    min-height: 100vh;
-}
-
-.header {
-    text-align: center;
-    padding: 25px;
-    font-size: 28px;
-    color: #00ffc8;
-    font-weight: bold;
-    text-shadow: 0 0 10px #00ffc8;
-}
-
-.container {
-    max-width: 430px;
-    margin: auto;
-    background: rgba(10,10,30,0.9);
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.9);
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    border: none;
-    background: #1c1c3a;
-    color: white;
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-.copy {
-    background: linear-gradient(45deg, gold, orange);
-    color: black;
-}
-
-.whatsapp {
-    background: linear-gradient(45deg, #00c853, #00ff88);
-}
-
-/* ALERTA */
-.alerta {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #00c853;
-    padding: 15px;
-    border-radius: 10px;
-    display: none;
-}
-</style>
-</head>
-
-<body>
-
-<div class="overlay">
-
-<div class="header">👑 BRASIL PLAYER ALPHAN</div>
-
-<div class="container">
-    <h2>📩 FORMULÁRIO OFICIAL</h2>
-
-    <input type="text" id="nome" placeholder="Nome do jogo">
-    <input type="number" id="idade" placeholder="Idade">
-
-    <input type="text" id="tempo" placeholder="Tempo que joga RPG">
-    <input type="text" id="org" placeholder="Organização desejada">
-    <input type="text" id="exp" placeholder="Experiência total">
-
-    <select id="orgAntiga">
-        <option>Já teve organização? Sim</option>
-        <option>Já teve organização? Não</option>
-    </select>
-
-    <textarea id="motivo" placeholder="Por que você deve ser escolhido"></textarea>
-
-    <input type="text" id="qualidade" placeholder="Sua melhor qualidade">
-    <input type="text" id="defeito" placeholder="Seu defeito">
-
-    <select id="ativo">
-        <option>Ativo: Sim</option>
-        <option>Ativo: Não</option>
-    </select>
-
-    <select id="discordUso">
-        <option>Usa Discord: Sim</option>
-        <option>Usa Discord: Não</option>
-    </select>
-
-    <input type="text" id="discord" placeholder="Nome do Discord">
-    <input type="text" id="horario" placeholder="Horário que joga">
-
-    <select id="mic">
-        <option>Tem Microfone: Sim</option>
-        <option>Tem Microfone: Não</option>
-    </select>
-
-    <button class="copy" onclick="copiar()">📋 COPIAR FORMULÁRIO</button>
-    <button class="whatsapp" onclick="entrar()" id="btnZap">🚀 ENTRAR NO GRUPO</button>
+    <button onclick="irParaFormulario()" style="background: linear-gradient(#00ffc8, #00ccaa); color:black;">ENTRAR NO SISTEMA</button>  
 </div>
+
+</div>  <!-- FORMULÁRIO DE ADM -->  <div class="overlay" id="form-screen" style="display:none;">  
+    <div style="text-align:center; padding:25px 0; font-size:28px; color:#00ffc8; font-weight:bold;">  
+        👑 BRASIL PLAY ALPHAN  
+    </div>  <div class="container">  
+    <h2>📩 FORMULÁRIO DE ADM</h2>  
+
+    <input type="text" id="nome" placeholder="1. Nome do jogo">  
+    <input type="number" id="idade" placeholder="2. Idade">  
+    <input type="text" id="tempo" placeholder="3. Tempo que joga">  
+    <input type="text" id="experiencia" placeholder="4. Experiência total">  
+
+    <select id="jaFoiAdm">  
+        <option value="">5. Você já foi ADM ou Helper alguma vez?</option>  
+        <option>Sim</option>  
+        <option>Não</option>  
+    </select>  
+
+    <input type="text" id="horario" placeholder="6. Horário que você costuma jogar">  
+
+    <textarea id="motivo" placeholder="7. Por que você deveria ser escolhido como ADM?"></textarea>  
+
+    <select id="microfone">  
+        <option value="">8. Tem microfone?</option>  
+        <option>Sim</option>  
+        <option>Não</option>  
+    </select>  
+
+    <select id="regras">  
+        <option value="">9. Conhece bem as regras do servidor?</option>  
+        <option>Sim</option>  
+        <option>Não</option>  
+    </select>  
+
+    <input type="text" id="discord" placeholder="10. Discord (com tag)">  
+
+    <!-- Perguntas 11 a 20 -->  
+    <textarea id="atender" placeholder="11. Como você atende e responde os jogadores?"></textarea>  
+    <textarea id="informar" placeholder="12. Como você reagiria se algum player começasse a xingar você?"></textarea>  
+    <textarea id="duvidas" placeholder="13. Como você lida com dúvidas dos jogadores?"></textarea>  
+    <textarea id="equipe" placeholder="14. você gosta de trabalhar em equipe?"></textarea>  
+    <textarea id="calmo" placeholder="15. Como você reage quando um jogador fica nervoso ou agressivo?"></textarea>  
+
+    <select id="ativo">  
+        <option value="">16. Você é ativo no servidor?</option>  
+        <option>Sim</option>  
+        <option>Não</option>  
+    </select>  
+
+    <select id="discordUso">  
+        <option value="">17. Você usa Discord diariamente?</option>  
+        <option>Sim</option>  
+        <option>Não</option>  
+    </select>  
+
+    <select id="paciencia">  
+        <option value="">18. Você tem paciência para atender muitos jogadores ao mesmo tempo?</option>  
+        <option>Sim</option>  
+        <option>Não</option>  
+    </select>  
+
+    <textarea id="ideia" placeholder="19. Qual ideia você traria para melhorar o atendimento?"></textarea>  
+    <textarea id="meta" placeholder="20. Qual sua maior meta como ADM?"></textarea>  
+
+    <button class="copy" onclick="copiar()">📋 COPIAR FORMULÁRIO</button>  
+    <button class="whatsapp" onclick="entrarNoZap()">🚀 ENTRAR NO GRUPO DO WHATSAPP</button>  
+</div>  
 
 <div class="alerta" id="alertaMsg"></div>
 
-</div>
+</div>  <script>  
+// LOADING (\~6 segundos)  
+let progress = 0;  
+const progressBar = document.getElementById('progress');  
+const statusText = document.getElementById('status');  
+const loadingScreen = document.getElementById('loading-screen');  
+  
+const loadingInterval = setInterval(() => {  
+    progress += Math.random() * 4 + 3;  
+    if (progress > 100) progress = 100;  
+    progressBar.style.width = progress + '%';  
+  
+    if (progress > 40) statusText.textContent = "VERIFICANDO INTEGRIDADE...";  
+    if (progress > 70) statusText.textContent = "CARREGANDO BANCO DE ADM...";  
+  
+    if (progress >= 100) {  
+        clearInterval(loadingInterval);  
+        loadingScreen.style.opacity = '0';  
+        setTimeout(() => {  
+            loadingScreen.style.display = 'none';  
+            document.getElementById('login-screen').style.display = 'flex';  
+        }, 1200);  
+    }  
+}, 160);  
+  
+// LOGIN  
+function irParaFormulario() {  
+    const user = document.getElementById('username').value.trim();  
+    const pass = document.getElementById('password').value.trim();  
+    if (!user || !pass) {  
+        alert("❌ Preencha nome de usuário e senha para continuar.");  
+        return;  
+    }  
+    document.getElementById('login-screen').style.display = 'none';  
+    document.getElementById('form-screen').style.display = 'block';  
+}  
+  
+// COPIAR FORMULÁRIO  
+function copiar() {  
+    let texto = `📩 FORMULÁRIO DE ADM - BRASIL PLAY ALPHAN\n\n`;  
+  
+    texto += `1. Nome do jogo: ${document.getElementById('nome').value || 'Não informado'}\n`;
+  
+    texto += `2. Idade: ${document.getElementById('idade').value || 'Não informado'}\n`;  
 
-<script>
+    texto += `3. Tempo que joga: ${document.getElementById('tempo').value || 'Não informado'}\n`;  
 
-// SISTEMA DE VERIFICAÇÃO
-let copiado = false;
+    texto += `4. Experiência total: ${document.getElementById('experiencia').value || 'Não informado'}\n`;  
 
-// COPIAR
-function copiar() {
-    let texto =
-`📩 FORMULÁRIO - BRASIL PLAYER ALPHAN
+    texto += `5. Já foi ADM ou Helper: ${document.getElementById('jaFoiAdm').value || 'Não respondido'}\n`;
+  
+    texto += `6. Horário que costuma jogar: ${document.getElementById('horario').value || 'Não informado'}\n`; 
+ 
+    texto += `7. Por que você deveria ser escolhido como ADM: ${document.getElementById('motivo').value || 'Não respondido'}\n`;  
 
-👤 Nome/ ${nome.value}
-🎂 Idade/ ${idade.value}
-⏱ Tempo RPG/ ${tempo.value}
-🏢 Organização/ ${org.value}
-📅 Experiência/ ${exp.value}
-📜 Organização antiga/ ${orgAntiga.value}
+    texto += `8. Tem microfone: ${document.getElementById('microfone').value || 'Não respondido'}\n`;  
 
-💬 Motivo/ ${motivo.value}
-⭐ Qualidade/ ${qualidade.value}
-⚠ Defeito/ ${defeito.value}
+    texto += `9. Conhece as regras do servidor: ${document.getElementById('regras').value || 'Não respondido'}\n`;  
 
-🔥 Ativo/ ${ativo.value}
-💻 Usa Discord/ ${discordUso.value}
-📱 Discord/ ${discord.value}
-
-🕒 Horário/ ${horario.value}
-🎤 Microfone/ ${mic.value}`;
-
-    navigator.clipboard.writeText(texto).then(() => {
-        copiado = true;
-        mostrarAlerta("✔ Formulário copiado! Agora entre no grupo do WhatsApp.");
-    }).catch(() => {
-        let area = document.createElement("textarea");
-        area.value = texto;
-        document.body.appendChild(area);
-        area.select();
-        document.execCommand("copy");
-        document.body.removeChild(area);
-
-        copiado = true;
-        mostrarAlerta("✔ Copiado! Agora pode entrar no grupo.");
-    });
-}
-
-// ENTRAR
-function entrar() {
-    if(!copiado){
-        mostrarAlerta("❌ Copia o seu formulário primeiro para entrar no zap!");
-        return;
-    }
-
-    window.open("https://chat.whatsapp.com/LJWAlh0f4sr3onyxbbh7uS?mode=gi_t");
-}
-
-// ALERTA
-function mostrarAlerta(msg) {
-    let alerta = document.getElementById("alertaMsg");
-    alerta.innerText = msg;
-    alerta.style.display = "block";
-
-    setTimeout(() => {
-        alerta.style.display = "none";
-    }, 4000);
-}
-
-</script>
-
-</body>
+    texto += `10. Discord: ${document.getElementById('discord').value || 'Não informado'}\n\n`;  
+  
+    texto += `11. Como você atende e responde os jogadores: ${document.getElementById('atender').value || 'Não respondido'}\n`;  
+    texto += `12. Como você passa informações importantes: ${document.getElementById('informar').value || 'Não respondido'}\n`;  
+    texto += `13. Como você lida com dúvidas dos jogadores: ${document.getElementById('duvidas').value || 'Não respondido'}\n`;  
+    texto += `14. Como você trabalha em equipe com outros ADMs: ${document.getElementById('equipe').value || 'Não respondido'}\n`;  
+    texto += `15. Como você reage quando um jogador fica nervoso: ${document.getElementById('calmo').value || 'Não respondido'}\n\n`;  
+  
+    texto += `16. Você é ativo no servidor: ${document.getElementById('ativo').value || 'Não respondido'}\n`;  
+    texto += `17. Usa Discord diariamente: ${document.getElementById('discordUso').value || 'Não respondido'}\n`;  
+    texto += `18. Tem paciência para atender muitos jogadores: ${document.getElementById('paciencia').value || 'Não respondido'}\n`;  
+    texto += `19. Ideia para melhorar o atendimento: ${document.getElementById('ideia').value || 'Não respondido'}\n`;  
+    texto += `20. Maior meta como ADM: ${document.getElementById('meta').value || 'Não respondido'}\n`;  
+  
+    navigator.clipboard.writeText(texto).then(() => {  
+        mostrarAlerta("✅ Formulário de ADM copiado com sucesso! (20 perguntas)");  
+    }).catch(() => {  
+        let area = document.createElement("textarea");  
+        area.value = texto;  
+        document.body.appendChild(area);  
+        area.select();  
+        document.execCommand("copy");  
+        document.body.removeChild(area);  
+        mostrarAlerta("✅ Formulário copiado!");  
+    });  
+}  
+  
+function entrarNoZap() {  
+    mostrarAlerta("🔄 Processando... Aguarde 2 segundos");  
+  
+    setTimeout(() => {  
+        window.open("https://chat.whatsapp.com/LJWAlh0f4sr3onyxbbh7uS?mode=gi_t", "_blank");  
+    }, 2000);  
+}  
+  
+function mostrarAlerta(msg) {  
+    let alerta = document.getElementById("alertaMsg");  
+    alerta.innerText = msg;  
+    alerta.style.display = "block";  
+    setTimeout(() => { alerta.style.display = "none"; }, 4000);  
+}  
+</script>  </body>  
 </html>
